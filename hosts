@@ -1,0 +1,20 @@
+[docker]
+10.64.0.11 NODE_NAME=node1 NODE_IP="10.64.0.11"
+10.64.0.12 NODE_NAME=node2 NODE_IP="10.64.0.12"
+10.64.0.13 NODE_NAME=node3 NODE_IP="10.64.0.13"
+
+[etcd]
+10.64.0.11 NODE_NAME=etcd1 NODE_IP="10.64.0.11"
+10.64.0.12 NODE_NAME=etcd2 NODE_IP="10.64.0.12"
+10.64.0.13 NODE_NAME=etcd3 NODE_IP="10.64.0.13"
+
+[all:vars]
+
+# etcd ---------
+ETCD_NODES="etcd1=http://10.64.0.11:2380,etcd2=http://10.64.0.12:2380,etcd3=http://10.64.0.13:2380"
+
+# ---------------
+# 默认安装目录
+bin_dir="/usr/local/bin"
+
+base_dir="/Users/gxk/toy/k8s/k8s_test"

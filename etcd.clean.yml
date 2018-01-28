@@ -1,0 +1,23 @@
+- hosts: etcd
+  become: yes
+  tasks:
+  - name: stop etcd service
+    systemd:
+      state: stopped
+      daemon_reload: yes
+      name: etcd
+      enabled: no
+    ignore_errors: True
+
+  - name: purge files
+    file: name={{ item }} state=absent
+    with_items: 
+    - "/var/lib/etcd"
+    - "/etcd/etcd/"
+    - "/etc/systemd/system/etcd.service"
+  
+  - name: rm bin
+    file: name={{ bin_dir }}/{{ item }} state=absent
+    with_items:
+    - etcd
+    - etcdctl

@@ -1,0 +1,47 @@
+- hosts: docker
+  sudo: yes
+  tasks:
+  - name: stop docker service
+    systemd:
+      state: stopped
+      daemon_reload: yes
+      name: docker
+      enabled: no
+    ignore_errors: True
+
+  - name: unmount fs1
+    mount: path=/var/run/docker/netns/default state=unmounted
+
+  - name: unmount fs2
+    mount: path=/var/run/docker/overlay state=unmounted
+
+  - name: purge files
+    file: name={{ item }} state=absent
+    with_items: 
+    - "/etc/docker"
+    - "/var/lib/docker"
+    - "/var/run/docker"
+    - "/etc/systemd/system/docker.service"
+    - "/etc/systemd/system/docker.service.requires/"
+  
+  - name: rm bin
+    file: name={{ bin_dir }}/{{ item }} state=absent
+    with_items:
+    - docker-containerd
+    - docker-containerd-shim
+    - docker-init
+    - docker-runc
+    - docker
+    - docker-containerd-ctr
+    - dockerd
+    - docker-proxy
+  
+  - name: purge net
+    shell: "ip link del docker0; "
+    ignore_errors: True
+
+  - name: restart network service
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      name: network

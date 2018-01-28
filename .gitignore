@@ -1,0 +1,8 @@
+# binary file
+bin/
+
+# vagrant
+vagrant/.vagrant/
+
+# ansible
+*.retry

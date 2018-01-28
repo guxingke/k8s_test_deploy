@@ -1,0 +1,5 @@
+- hosts: docker
+  sudo: yes
+  gather_facts: True
+  roles:
+  - docker
